@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
+import contactsAction from "../../redux/сontacts/сontacts-actions";
 import styles from "./ContactsList.module.css";
 
 const ContactItem = ({ id, name, number, onDelete }) => (
@@ -11,7 +13,7 @@ const ContactItem = ({ id, name, number, onDelete }) => (
       <button
         className={styles.delete_contact_btn}
         value={id}
-        onClick={onDelete}
+        onClick={() => onDelete(id)}
       >
         Delete
       </button>
@@ -33,4 +35,8 @@ ContactItem.propTypes = {
   onDelete: PropTypes.func,
 };
 
-export default ContactItem;
+const mapDispatchToProps = (dispatch) => ({
+  onDelete: (contactId) => dispatch(contactsAction.deleteContact(contactId)),
+});
+
+export default connect(null, mapDispatchToProps)(ContactItem);

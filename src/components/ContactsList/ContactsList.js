@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import ContactItem from "./ContactItem";
 
-const ContactsList = ({ contacts, onDelete }) => {
+const ContactsList = ({ contacts }) => {
   console.log("ContactsList ~ contacts: ", contacts);
 
   return (
@@ -17,13 +18,8 @@ const ContactsList = ({ contacts, onDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map(({ id, name, number }) => (
-            <ContactItem
-              id={id}
-              name={name}
-              number={number}
-              onDelete={onDelete}
-            />
+          {contacts.map(({ text: { id, name, number } }) => (
+            <ContactItem id={id} name={name} number={number} />
           ))}
         </tbody>
       </table>
@@ -49,4 +45,43 @@ ContactsList.propTypes = {
   onDelete: PropTypes.func,
 };
 
-export default ContactsList;
+const getVisibleTodos = (allContacts, filter) => {
+  console.log("getVisibleTodos ~ allContacts ==> ", allContacts);
+  const normalizedFilter = filter.toLowerCase();
+  console.log("getVisibleTodos ~ normalizedFilter ==> ", normalizedFilter);
+
+  const getAllContacts = allContacts.filter(({ text: { name } }) =>
+    name.toLowerCase().includes(normalizedFilter)
+  );
+
+  console.log("allContacts ~ getAllContacts ==>  ", getAllContacts);
+
+  return getAllContacts;
+};
+
+const mapStateToProps = ({ contacts: { items, filter } }) => {
+  return {
+    contacts: getVisibleTodos(items, filter),
+  };
+  // const contactsDate = localStorage.getItem("contacts");
+  // const parsedContacts = JSON.parse(contactsDate);
+  // console.log(
+  //     "ContactsList => mapStateToProps ~ parsedContacts ==> ",
+  //     parsedContacts
+  // );
+
+  // if (parsedContacts) {
+  //     return {
+  //         contacts: getVisibleTodos(parsedContacts, filter),
+  //     };
+  // } else {
+  //     return {
+  //         contacts: getVisibleTodos(items, filter),
+  //     };
+  // }
+  // return {
+  //     contacts: state.contacts,
+  // };
+};
+
+export default connect(mapStateToProps)(ContactsList);

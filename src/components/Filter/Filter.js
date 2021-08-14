@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
+import contactsAction from "../../redux/сontacts/сontacts-actions";
 import styles from "./Filter.module.css";
 
 const Fiter = ({ value, onChange }) => (
@@ -25,4 +27,12 @@ Fiter.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default Fiter;
+const mapStateToProps = (state) => ({
+  value: state.contacts.filter,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (e) => dispatch(contactsAction.changeFilter(e.target.value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Fiter);
