@@ -5,16 +5,15 @@ import actionContacts from "./сontacts-actions";
 
 function checkGetNewContact(state, payload) {
   const isEqualName = (payload) => {
-    console.log("EQUAL ADD: ", payload);
+    // console.log("EQUAL ADD: ", payload);
     // console.log("EQUAL ADD: ", payload.text.name);
     return state.find(({ name }) => name === payload.name);
   };
 
   if (!isEqualName(payload)) {
-    console.log("items ~ payload ==>  ", payload);
+    // console.log("items ~ payload ==>  ", payload);
     const newContacts = [payload, ...state];
-    console.log("items ~ newContacts ==>  ", newContacts);
-    // localStorage.setItem("contacts", JSON.stringify(newContacts));
+    // console.log("items ~ newContacts ==>  ", newContacts);
 
     return newContacts;
   } else {

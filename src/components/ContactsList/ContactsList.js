@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -65,25 +65,6 @@ const mapStateToProps = ({ contacts: { items, filter } }) => {
   return {
     contacts: getVisibleContacts(items, filter),
   };
-  // const contactsDate = localStorage.getItem("contacts");
-  // const parsedContacts = JSON.parse(contactsDate);
-  // console.log(
-  //     "ContactsList => mapStateToProps ~ parsedContacts ==> ",
-  //     parsedContacts
-  // );
-
-  // if (parsedContacts) {
-  //     return {
-  //         contacts: getVisibleTodos(parsedContacts, filter),
-  //     };
-  // } else {
-  //     return {
-  //         contacts: getVisibleTodos(items, filter),
-  //     };
-  // }
-  // return {
-  //     contacts: state.contacts,
-  // };
 };
 
 export default connect(mapStateToProps)(ContactsList);
