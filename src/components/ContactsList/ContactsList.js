@@ -18,7 +18,7 @@ const ContactsList = ({ contacts }) => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map(({ text: { id, name, number } }) => (
+          {contacts.map(({ id, name, number }) => (
             <ContactItem id={id} name={name} number={number} />
           ))}
         </tbody>
@@ -45,12 +45,14 @@ ContactsList.propTypes = {
   onDelete: PropTypes.func,
 };
 
-const getVisibleTodos = (allContacts, filter) => {
-  console.log("getVisibleTodos ~ allContacts ==> ", allContacts);
-  const normalizedFilter = filter.toLowerCase();
-  console.log("getVisibleTodos ~ normalizedFilter ==> ", normalizedFilter);
+const getVisibleContacts = (allContacts, filter) => {
+  console.log("getVisibleContacts ~ allContacts ==> ", allContacts);
+  console.log("getVisibleContacts ~ filter ==> ", filter);
 
-  const getAllContacts = allContacts.filter(({ text: { name } }) =>
+  const normalizedFilter = filter.toLowerCase();
+  console.log("getVisibleContacts ~ normalizedFilter ==> ", normalizedFilter);
+
+  const getAllContacts = allContacts.filter(({ name }) =>
     name.toLowerCase().includes(normalizedFilter)
   );
 
@@ -61,7 +63,7 @@ const getVisibleTodos = (allContacts, filter) => {
 
 const mapStateToProps = ({ contacts: { items, filter } }) => {
   return {
-    contacts: getVisibleTodos(items, filter),
+    contacts: getVisibleContacts(items, filter),
   };
   // const contactsDate = localStorage.getItem("contacts");
   // const parsedContacts = JSON.parse(contactsDate);

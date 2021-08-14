@@ -1,52 +1,37 @@
 import { combineReducers } from "redux";
+import { createReducer } from "@reduxjs/toolkit";
 
-import types from "./сontacts-types";
+import actionContacts from "./сontacts-actions";
 
-import store from "../store";
+function checkGetNewContact(state, payload) {
+  const isEqualName = (payload) => {
+    console.log("EQUAL ADD: ", payload);
+    // console.log("EQUAL ADD: ", payload.text.name);
+    return state.find(({ name }) => name === payload.name);
+  };
 
-const items = (state = [], { type, payload }) => {
-  switch (type) {
-    case types.ADD:
-      console.log("types.ADD ~ payload ==>  ", payload);
+  if (!isEqualName(payload)) {
+    console.log("items ~ payload ==>  ", payload);
+    const newContacts = [payload, ...state];
+    console.log("items ~ newContacts ==>  ", newContacts);
+    // localStorage.setItem("contacts", JSON.stringify(newContacts));
 
-      const isEqualName = (payload) => {
-        console.log("EQUAL ADD: ", payload);
-        // console.log("EQUAL ADD: ", payload.text.name);
-        return state.find(({ text: { name } }) => name === payload.text.name);
-      };
-
-      if (!isEqualName(payload)) {
-        console.log("items ~ payload ==>  ", payload);
-        const newContacts = [payload, ...state];
-        console.log("items ~ newContacts ==>  ", newContacts);
-        // localStorage.setItem("contacts", JSON.stringify(newContacts));
-
-        return newContacts;
-      } else {
-        alert(`${payload.text.name} is already in contacts`);
-        return state;
-      }
-
-    case types.DELETE:
-      console.log("DELETE items ~ state", state);
-
-      const updatedState = state.filter(({ text: { id } }) => id !== payload);
-      // localStorage.setItem("contacts", JSON.stringify(updatedState));
-      return updatedState;
-
-    default:
-      return state;
+    return newContacts;
+  } else {
+    alert(`${payload.text.name} is already in contacts`);
+    return state;
   }
-};
+}
 
-const filter = (state = "", { type, payload }) => {
-  switch (type) {
-    case types.CHANGE_FILTER:
-      return payload;
+const items = createReducer([], {
+  [actionContacts.addContact]: (state, { payload }) =>
+    checkGetNewContact(state, payload),
+  [actionContacts.deleteContact]: (state, { payload }) =>
+    state.filter(({ id }) => id !== payload),
+});
 
-    default:
-      return state;
-  }
-};
+const filter = createReducer("", {
+  [actionContacts.changeFilter]: (state, { type, payload }) => payload,
+});
 
 export default combineReducers({ items, filter });
