@@ -18,7 +18,7 @@ function checkGetNewContact(state, payload) {
 
     return newContacts;
   } else {
-    alert(`${payload.text.name} is already in contacts`);
+    alert(`${payload.name} is already in contacts`);
     return state;
   }
 }
